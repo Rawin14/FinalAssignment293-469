@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="templatemo">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  <title>Liberty Template - Create NFT Page</title>
+  <!-- Bootstrap core CSS -->
+  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="../assets/css/fontawesome.css">
+  <link rel="stylesheet" href="../assets/css/templatemo-liberty-market.css">
+  <link rel="stylesheet" href="../assets/css/owl.css">
+  <link rel="stylesheet" href="../assets/css/animate.css">
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+</head>
+
+<body>
+  <!-- ***** Header Area Start ***** -->
+  <header class="header-area header-sticky">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <a href="index.html" class="logo"><img src="assets/images/logo.png" alt=""></a>
+            <ul class="nav">
+              <ul class="nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="explore.html">Type</a></li>
+                <li><a href="details.html" >Game</a></li>
+                <li><a href="author.html">Author</a></li>
+                <li><a href="create.html" class="active">Create Yours</a></li>
+              </ul>
+            </ul>
+            <a class='menu-trigger'><span>Menu</span></a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+  <div class="page-heading normal-space">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h6>Liberty NFT Market</h6>
+          <h2>Create Your NFT Now.</h2>
+          <span>Home > <a href="#">Create Yours</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="item-details-page">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-heading">
+            <div class="line-dec"></div>
+            <h2>Start <em>Registration</em> Page</h2>
+          </div>
+        </div>
+        <div class="col-lg-12">
+          <form id="contact" action="" method="post" onsubmit="return validateForm(event)">
+            <div class="row">
+              <!-- Username and Name Fields -->
+              <div class="col-lg-4">
+                <fieldset>
+                  <label for="username">Username</label>
+                  <input type="text" name="username" id="username" placeholder="Ex. Momo" autocomplete="on" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-4">
+                <fieldset>
+                  <label for="surname">Surname</label>
+                  <input type="text" name="surname" id="surname" placeholder="Ex. Jeerapan" autocomplete="on" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-4">
+                <fieldset>
+                  <label for="lastname">Lastname</label>
+                  <input type="text" name="lastname" id="lastname" placeholder="Ex. Chirachanchai" autocomplete="on" required>
+                </fieldset>
+              </div>
+              
+              <!-- Address Fields -->
+              <div class="col-lg-6">
+                <fieldset>
+                  <label for="country">Country</label>
+                  <select id="country" name="country" required onchange="updateProvinces()">
+                    <option value="" disabled selected>Select Country</option>
+                    <option value="thailand">Thailand</option>
+                    <option value="usa">United States</option>
+                    <option value="uk">United Kingdom</option>
+                    <option value="japan">Japan</option>
+                    <option value="china">China</option>
+                    <option value="india">India</option>
+                    <option value="germany">Germany</option>
+                    <option value="france">France</option>
+                    <option value="australia">Australia</option>
+                    <option value="canada">Canada</option>
+                  </select>
+                </fieldset>
+              </div>
+              <div class="col-lg-6">
+                <fieldset>
+                  <label for="province">Province</label>
+                  <select id="province" name="province" required>
+                    <option value="" disabled selected>Select Province</option>
+                  </select>
+                </fieldset>
+              </div>
+              <div class="col-lg-12">
+                <fieldset>
+                  <label for="address">Full Address</label>
+                  <input type="text" name="address" id="address" placeholder="Enter your full address" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-6">
+                <fieldset>
+                  <label for="zipcode">Postal Code</label>
+                  <input type="text" name="zipcode" id="zipcode" placeholder="Enter your postal code" required pattern="\d{5}" title="Postal code must be 5 digits.">
+                </fieldset>
+              </div>
+              <!-- Contact Fields -->
+              <div class="col-lg-6">
+                <fieldset>
+                  <label for="mail">Email</label>
+                  <input type="email" name="mail" id="mail" placeholder="xxx@gmail.com" autocomplete="on" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-6">
+                <fieldset>
+                  <label for="TelNum">Tel.</label>
+                  <input type="text" name="TelNum" id="TelNum" placeholder="xxxxxxxxxx" autocomplete="on" required>
+                </fieldset>
+              </div>
+              <!-- Gender and Birth Date -->
+              <div class="col-lg-4">
+                <fieldset>
+                  <label for="gender">Gender</label>
+                  <select id="gender" name="gender" required>
+                    <option value="" disabled selected>Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </fieldset>
+              </div>
+              <div class="col-lg-4">
+                <fieldset>
+                  <label for="dob">Date of Birth</label>
+                  <input type="date" name="dob" id="dob" required>
+                </fieldset>
+              </div>
+              <div class="col-lg-4">
+                <fieldset>
+                  <label for="file">Your Profile</label>
+                  <input type="file" id="file" name="myfiles[]" multiple />
+                </fieldset>
+              </div>
+              <br>
+              <br>
+              <!-- Password Fields -->
+              <div class="col-lg-6">
+                <fieldset>
+                  <label for="password">Password</label>
+                  <input type="password" name="password" id="password" placeholder="Enter your password" minlength="8" required>
+                </fieldset>
+              </div>
+              
+              <div class="col-lg-6">
+                <fieldset>
+                  <label for="confirm_password">Confirm Password</label>
+                  <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password" minlength="8" required>
+                </fieldset>
+              </div>
+              <!-- Submit Button -->
+              <div class="col-lg-8">
+                <fieldset>
+                  <button type="submit" id="form-submit" class="orange-button">Submit</button>
+                </fieldset>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright © 2022 <a href="#">Liberty</a> NFT Marketplace Co., Ltd. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../assets/js/register.js"></script>
+  
+</body>
+
+</html>
