@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="templatemo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+
+
+    <!-- Bootstrap core CSS -->
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="../assets/css/fontawesome.css">
+    <link rel="stylesheet" href="../assets/css/templatemo-liberty-market.css">
+    <link rel="stylesheet" href="../assets/css/owl.css">
+    <link rel="stylesheet" href="../assets/css/animate.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="../assets/css/login.css">
+    <!--
+
+TemplateMo 577 Liberty Market
+
+-->
+</head>
+
+<body>
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">
+                            <img src="../assets/images/logo.png" alt="">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="types.html">Type</a></li>
+                            <li><a href="game.html">Game</a></li>
+                            <li><a href="blog.html">Author</a></li>
+                            <div>
+                                <li><a href="create.html">Create Yours</a></li>
+                                <li><a href="login.html" class="active">Login</a></li>
+                            </div>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="header-text">
+        <div class="page-heading normal-space">
+            <div class="container-center">
+                <div class="form-container">
+                    <h3 class="text-signin">Sign in</h3>
+                    <br>
+                    <form id="loginForm" method="POST" action="" onsubmit="return validateLogin()">
+                        <div class="field-row">
+                            <div class="col-lg-12 form-group">
+                                <label for="username">Username</label>
+                                <input type="text" name="username" id="username" class="form-control"
+                                    placeholder="Enter your username" required>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="col-lg-12 form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" id="password" class="form-control"
+                                    placeholder="Enter your password" required>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="col-lg-12 form-group">
+                                <div class="remember-me">
+                                    <input type="checkbox" id="showPassword" onclick="togglePasswordVisibility()"> Show
+                                    Password
+                                </div>
+                                <div class="remember-me">
+                                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                                    <label for="rememberMe">Remember Me</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="col-lg-12 captcha-group">
+                                <button type="button" class="btn btn-secondary" onclick="requestCaptcha()">I'm not a
+                                    robot</button>
+                                <div id="captchaAlert" style="display: none;">Please verify the captcha.</div>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="col-lg-12 login-btn">
+                                <button type="submit" class="btn btn-primary">Login</button>
+                            </div>
+                        </div>
+                        <div class="field-row">
+                            <div class="col-lg-12 forgot-password">
+                                <a href="#">Forgot Password?</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright © 2024 <a href="#">293-469</a> JeerapanRavidanai Co., Ltd. All rights reserved.
+                    &nbsp;&nbsp;
+                    Designed by <a title="HTML CSS Templates" rel="sponsored" href="https://templatemo.com"
+                        target="_blank">293-469</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="../vendor/jquery/jquery.min.js"></script>
+<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="../assets/js/isotope.min.js"></script>
+<script src="../assets/js/owl-carousel.js"></script>
+
+<script src="../assets/js/tabs.js"></script>
+<script src="../assets/js/popup.js"></script>
+<script src="../assets/js/custom.js"></script>
+
+<script src="../assets/js/login.js"></script>
+
+</html>

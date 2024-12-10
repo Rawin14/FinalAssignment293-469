@@ -1,0 +1,194 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f4;
+}
+
+.sidebar {
+    background: #ffffff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+}
+.sidebar {
+    background: #ffffff;
+    border-right: 1px solid #ddd;
+    padding: 20px;
+}
+
+.sidebar .header-forum {
+    background: #407bff;
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar .header-forum h1 {
+    font-size: 1.2em;
+    margin: 0;
+}
+
+.sidebar .header-forum p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background-color: #d3d3d3;
+    /* สีเทา */
+    border: 2px solid #aaa;
+    /* กรอบรอบๆ */
+    border-radius: 8px;
+    /* ทำให้มุมมน */
+    padding: 10px 5px;
+    transition: all 0.1s ease;
+    /* เพิ่มเอฟเฟกต์แบบนุ่มนวล */
+}
+
+.menu-item span {
+    display: block;
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+}
+
+.socialmenu {
+    margin-bottom: 5%;
+}
+
+.menu-item .submenu {
+    list-style: none;
+    padding-left: 20px;
+    margin-top: 10px;
+    display: none;
+}
+
+.menu-item .submenu li {
+    margin-bottom: 5px;
+}
+
+.menu-item .submenu li a {
+    text-decoration: none;
+    color: #000000;
+    font-size: 0.9em;
+}
+
+.menu-item .submenu li a:hover {
+    text-decoration: underline;
+    color: #3350af;
+}
+
+.menu-item span {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+
+.menu-item .arrow {
+    border: solid #666;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 4px;
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+}
+
+.menu-item.open .arrow {
+    transform: rotate(-135deg);
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 20px;
+    margin-top: 10px;
+    display: none;
+}
+
+.menu-item.open .submenu {
+    display: block;
+}
+
+
+.search-section h1 {
+    color: #000;
+}
+
+.announcement-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background: #d3d3d3;
+    margin: 10px 0;
+}
+
+.announcement-box {
+    padding: 8px;
+    border: 1px solid #aaa;
+    margin: 0 5px;
+    font-size: 0.9em;
+    border-radius: 5px;
+}
+
+/* Content Section */
+.news-section {
+    padding: 10px;
+}
+
+.news-item {
+    display: flex;
+    background: #fff;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.news-image {
+    background: #aaa;
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.news-content {
+    padding: 10px;
+    flex-grow: 1;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.page-btn {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: 1px solid #407bff;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.page-btn:hover {
+    background-color: #407bff;
+    color: white;
+}
