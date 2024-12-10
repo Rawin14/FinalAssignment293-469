@@ -30,3 +30,15 @@
     color: #721c24;
     border: 1px solid #f5c6cb;
 }
+
+.name-game {
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    font-size: 50px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

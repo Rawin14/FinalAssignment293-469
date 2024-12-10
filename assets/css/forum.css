@@ -5,11 +5,17 @@ body {
     background: #f4f4f4;
 }
 
+.line {
+    border-bottom: 2px solid #797676;
+    margin-bottom: 3%;
+}
+
 .sidebar {
     background: #ffffff;
     border-right: 1px solid #ddd;
     padding: 20px;
 }
+
 .sidebar {
     background: #ffffff;
     border-right: 1px solid #ddd;
@@ -125,6 +131,27 @@ body {
     display: block;
 }
 
+.search-section {
+    display: flex;
+    /* ใช้ Flexbox */
+    justify-content: space-between;
+    /* ทำให้ส่วนต่าง ๆ ชิดซ้ายและขวา */
+    align-items: center;
+    /* จัดให้อยู่กึ่งกลางในแนวแกน Y */
+}
+
+.btn-write .button-write a {
+    text-decoration: none;
+    /* ปรับให้ไม่มี underline */
+    color: inherit;
+    /* ใช้สีเหมือนกับพ่อ (parent) ถ้าจำเป็น */
+}
+
+.plus-link::before {
+    content: '+';
+    font-size: 20px; /* ปรับขนาดตามต้องการ */
+    margin-right: 5px; /* เพิ่มช่องว่างระหว่างเครื่องหมาย + และข้อความ */
+  }
 
 .search-section h1 {
     color: #000;
@@ -147,11 +174,11 @@ body {
 }
 
 /* Content Section */
-.news-section {
+.Forum-section {
     padding: 10px;
 }
 
-.news-item {
+.Forum-item {
     display: flex;
     background: #fff;
     border: 1px solid #ddd;
@@ -159,14 +186,14 @@ body {
     border-radius: 5px;
 }
 
-.news-image {
+.Forum-image {
     background: #aaa;
     width: 100px;
     height: 100px;
     flex-shrink: 0;
 }
 
-.news-content {
+.Forum-content {
     padding: 10px;
     flex-grow: 1;
 }
@@ -191,4 +218,41 @@ body {
 .page-btn:hover {
     background-color: #407bff;
     color: white;
+}
+
+.filter {
+    border-radius: 5px;
+}
+
+.button-write a {
+    font-size: 20px;
+    color: #fff;
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    padding: 12px 30px;
+    display: inline-block;
+    border-radius: 25px;
+    font-weight: 500;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.button-write a:after {
+    width: 78%;
+    height: 2px;
+    background-color: #fff;
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+}
+
+.button-write a:hover {
+    background-color: #407bff;
+    color: #000000;
+    border: 1px solid #000000;
 }
