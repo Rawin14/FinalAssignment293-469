@@ -9,14 +9,14 @@
     rel="stylesheet">
   <title>Liberty Template - Create NFT Page</title>
   <!-- Bootstrap core CSS -->
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Additional CSS Files -->
-  <link rel="stylesheet" href="../assets/css/fontawesome.css">
-  <link rel="stylesheet" href="../assets/css/templatemo-liberty-market.css">
-  <link rel="stylesheet" href="../assets/css/owl.css">
-  <link rel="stylesheet" href="../assets/css/animate.css">
+  <link rel="stylesheet" href="/css/fontawesome.css">
+  <link rel="stylesheet" href="/css/templatemo-liberty-market.css">
+  <link rel="stylesheet" href="/css/owl.css">
+  <link rel="stylesheet" href="/css/animate.css">
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-  <link rel="stylesheet" href="../assets/css/create.css">
+  <link rel="stylesheet" href="/css/create.css">
 </head>
 
 <body>
@@ -27,19 +27,19 @@
         <div class="col-12">
           <nav class="main-nav">
             <!-- ***** Logo Start ***** -->
-            <a href="index.html" class="logo">
-              <img src="../assets/images/logo.png" alt="">
+            <a href="/index" class="logo">
+              <img src="/images/logo.png" alt="">
             </a>
             <!-- ***** Logo End ***** -->
             <!-- ***** Menu Start ***** -->
             <ul class="nav">
-              <li><a href="index.html">Home</a></li>
-              <li><a href="types.html">Type</a></li>
-              <li><a href="game.html">Game</a></li>
-              <li><a href="forum.html">Forum</a></li>
+              <li><a href="/home">Home</a></li>
+              <li><a href="/types">Type</a></li>
+              <li><a href="/game">Game</a></li>
+              <li><a href="/forum">Forum</a></li>
               <div>
-                <li><a href="create.html" class="active">Create Yours</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="/register" class="active">Create Yours</a></li>
+                <li><a href="/login">Login</a></li>
               </div>
             </ul>
             <a class='menu-trigger'>
@@ -75,7 +75,7 @@
           </div>
         </div>
         <div class="col-lg-12">
-          <form id="contact" action="" method="post" onsubmit="return validateForm(event)">
+          <form id="contact" action="/register" method="POST" onsubmit="return validateForm(event)">
             <div class="row">
               <!-- Username and Name Fields -->
               <div class="col-lg-4">
@@ -122,6 +122,7 @@
                   <label for="province">Province</label>
                   <select id="province" name="province" required>
                     <option value="" disabled selected>Select Province</option>
+                    <option value="bkk">กรุงเทพมหานคร</option>
                   </select>
                 </fieldset>
               </div>
@@ -220,14 +221,14 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="/jquery/jquery.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.min.js"></script>
 
-  <script src="../assets/js/isotope.min.js"></script>
-  <script src="../assets/js/owl-carousel.js"></script>
+  <script src="/js/isotope.min.js"></script>
+  <script src="/js/owl-carousel.js"></script>
 
-  <script src="../assets/js/tabs.js"></script>
-  <script src="../assets/js/popup.js"></script>
-  <script src="../assets/js/custom.js"></script>
+  <script src="/js/tabs.js"></script>
+  <script src="/js/popup.js"></script>
+  <script src="/js/custom.js"></script>
 
 </html>

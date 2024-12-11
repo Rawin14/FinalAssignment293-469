@@ -5,10 +5,10 @@
     color: #fff;
     text-align: left;
 }
+
 .game-details-page {
     background-image: url(../images/dark-bg.jpg);
-    background-repeat: no-repeat;
-    background-position: center center;
+    background-position: center;
     background-size: cover;
     padding: 120px 0px 120px 0px;
     position: relative;
@@ -20,11 +20,13 @@
     border-radius: 5px;
     text-align: left;
 }
+
 .alert-success {
     background-color: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
 }
+
 .alert-danger {
     background-color: #f8d7da;
     color: #721c24;
@@ -41,4 +43,24 @@
     font-size: 50px;
     text-transform: uppercase;
     letter-spacing: 1px;
+}
+
+.item-howtoplay {
+    background-color: #ccc;
+    background-size: cover;
+    padding: 50px 0px 50px 0px;
+    border-radius: 10px;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    font-size: 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.color-text {
+    color: #000;
 }

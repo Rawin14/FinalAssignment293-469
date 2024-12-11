@@ -14,12 +14,7 @@ body {
     background: #ffffff;
     border-right: 1px solid #ddd;
     padding: 20px;
-}
-
-.sidebar {
-    background: #ffffff;
-    border-right: 1px solid #ddd;
-    padding: 20px;
+    border-radius: 20px;
 }
 
 .sidebar .header-forum {
@@ -256,3 +251,57 @@ body {
     color: #000000;
     border: 1px solid #000000;
 }
+
+/* ทำให้ .content-area เป็นคอนเทนเนอร์ */
+.content-area {
+    width: 100%;
+    max-width: 1200px; /* จำกัดความกว้างของคอนเทนเนอร์ */
+    margin: 0 auto; /* จัดให้อยู่กลาง */
+    padding: 20px; /* เว้นระยะจากขอบ */
+  }
+  
+  .Forum-item {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  /* กำหนดรูปแบบให้กับโพสต์แต่ละอัน */
+  .post-item {
+    display: block; /* แสดงในแถวใหม่ */
+    margin-bottom: 20px; /* เว้นระยะระหว่างโพสต์ */
+    padding: 15px;
+    background-color: #f9f9f9; /* สีพื้นหลังของโพสต์ */
+    border: 1px solid #ddd; /* เส้นขอบโพสต์ */
+    border-radius: 8px; /* มุมมน */
+  }
+  
+  /* กำหนดรูปแบบให้กับลิงก์ภายในโพสต์ */
+  .post-item a {
+    text-decoration: none; /* ป้องกันเส้นใต้ของลิงก์ */
+    color: inherit; /* ใช้สีของข้อความที่ตั้งไว้ */
+  }
+  
+  /* รูปแบบสำหรับหัวข้อโพสต์ */
+  .post-item h3 {
+    color: #333; /* สีของหัวข้อโพสต์ */
+    font-size: 1.2em;
+    margin-bottom: 10px;
+  }
+  
+  /* รูปแบบสำหรับวันที่ของโพสต์ */
+  .post-item span {
+    font-size: 0.9em;
+    color: #777; /* สีสำหรับวันที่ */
+  }
+  
+  /* สามารถเพิ่มรูปแบบอื่นๆ เช่น hover หรือ effects ต่างๆ ได้ */
+  .post-item:hover {
+    background-color: #f1f1f1; /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+    border-color: #ccc; /* เปลี่ยนสีเส้นขอบ */
+  }
+  
+  .post-item:hover {
+    background-color: #eaeaea; /* เปลี่ยนพื้นหลังเมื่อ hover */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* เพิ่มเงาให้โพสต์เมื่อ hover */
+  }
+  

@@ -25,7 +25,9 @@ Table of contents
 font & reset css
 --------------------------------------------- 
 */
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:100,200,300,400,500,600,700,800,900");
+
 /* 
 ---------------------------------------------
 reset
@@ -2111,4 +2113,8 @@ body {
 
 @media (max-width: 1200px) {
   
+}
+
+.color-text {
+  color: #000;
 }

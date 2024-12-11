@@ -31,10 +31,10 @@ function togglePasswordVisibility() {
       return false;
     }
 
-    var deviceRecognized = confirm("Is this a recognized device?");
-    if (!deviceRecognized) {
-      alert("New device detected. Please verify your login via email.");
-    }
+    // var deviceRecognized = confirm("Is this a recognized device?");
+    // if (!deviceRecognized) {
+    //   alert("New device detected. Please verify your login via email.");
+    // }
 
     return true;
   }

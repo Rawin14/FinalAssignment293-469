@@ -13,16 +13,16 @@
   <title>Liberty NFT - Author Detail Page</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 
   <!-- Additional CSS Files -->
-  <link rel="stylesheet" href="../assets/css/fontawesome.css">
-  <link rel="stylesheet" href="../assets/css/templatemo-liberty-market.css">
-  <link rel="stylesheet" href="../assets/css/owl.css">
-  <link rel="stylesheet" href="../assets/css/animate.css">
+  <link rel="stylesheet" href="/css/fontawesome.css">
+  <link rel="stylesheet" href="/css/templatemo-liberty-market.css">
+  <link rel="stylesheet" href="/css/owl.css">
+  <link rel="stylesheet" href="/css/animate.css">
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
-  <link rel="stylesheet" href="../assets/css/forum.css">
+  <link rel="stylesheet" href="/css/forum.css">
   <!--
 
 TemplateMo 577 Liberty Market
@@ -54,19 +54,19 @@ https://templatemo.com/tm-577-liberty-market
         <div class="col-12">
           <nav class="main-nav">
             <!-- ***** Logo Start ***** -->
-            <a href="index.html" class="logo">
-              <img src="../assets/images/logo.png" alt="">
+            <a href="/index" class="logo">
+              <img src="/images/logo.png" alt="">
             </a>
             <!-- ***** Logo End ***** -->
             <!-- ***** Menu Start ***** -->
             <ul class="nav">
-              <li><a href="index.html">Home</a></li>
-              <li><a href="types.html">Type</a></li>
-              <li><a href="game.html">Game</a></li>
-              <li><a href="forum.html" class="active">Forum</a></li>
+              <li><a href="/home">Home</a></li>
+              <li><a href="/types">Type</a></li>
+              <li><a href="/game">Game</a></li>
+              <li><a href="/forum" class="active">Forum</a></li>
               <div>
-                <li><a href="create.html">Create Yours</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="/register">Create Yours</a></li>
+                <li><a href="/login">Login</a></li>
               </div>
             </ul>
             <a class='menu-trigger'>
@@ -103,16 +103,15 @@ https://templatemo.com/tm-577-liberty-market
               <p>👤 ....</p>
             </div>
             <ul class="menu">
-              <li class="menu-item">
-                <span>โพสต์ทั้งหมด</span>
-              </li>
               <ul class="socialmenu">
                 <li><a href="#">X (Twitter)</a></li>
                 <li><a href="#">Facebook</a></li>
                 <li><a href="#">Youtube</a></li>
                 <li><a href="https://www.instagram.com/_iamrawin/?hl=en">Instagram</a></li>
-
               </ul>
+              <li class="menu-item">
+                <span>โพสต์ทั้งหมด</span>
+              </li>
               <li class="menu-item">
                 <span>Type of Cybercrime
                   <i class="arrow"></i>
@@ -135,11 +134,11 @@ https://templatemo.com/tm-577-liberty-market
                 <h1>โพสต์ทั้งหมด</h1>
                 <div class="btn-write">
                   <div class="button-write">
-                    <a href="writeforum.html" class="plus-link">เพิ่ม</a>
+                    <a href="/write" class="plus-link">เพิ่ม</a>
                   </div>
                 </div>
               </div>
-              
+
               <div class="line"></div>
               <!-- Main Sidebar Section -->
               <div class="Forum-section">
@@ -152,30 +151,41 @@ https://templatemo.com/tm-577-liberty-market
 
                 <!-- Articles/Forum -->
                 <div class="content-area">
-                  <div class="Forum-item">
-                    <div class="Forum-image"></div>
-                    <div class="Forum-content">
-                      <h3>ประกาศเปิดและแจ้งการใช้งานร้านค้าร่วม</h3>
-                      <span>วันที่ 5 ธันวาคม 2024 - จำนวนผู้เข้าชม 734</span>
-                    </div>
-                  </div>
-
-                  <div class="Forum-item">
-                    <div class="Forum-image"></div>
-                    <div class="Forum-content">
-                      <h3>กิจกรรมแชร์กิจกรรมสนุกสนาน</h3>
-                      <span>วันที่ 5 ธันวาคม 2024</span>
-                    </div>
-                  </div>
+                  <% data.forEach(post => { %>
+                    <div class="post-item"> <!-- เพิ่ม div สำหรับแต่ละโพสต์ -->
+                      <a href="/post/<%= post._id %>">
+                        <h3 class="color-text">
+                          <%= post.title %>
+                        </h3>
+                        <span class="color-text">
+                          <%= post.created_date %>
+                        </span>
+                      </a>
+                    </div> <!-- ปิด div ของแต่ละโพสต์ -->
+                    <% }) %>
                 </div>
+
 
                 <!-- Pagination Section -->
-                <div class="pagination">
-                  <button class="page-btn">1</button>
-                  <button class="page-btn">2</button>
-                  <button class="page-btn">3</button>
-                  <button class="page-btn">4</button>
-                </div>
+                <% if (totalPages> 1) { %>
+                  <div class="pagination">
+                    <% if (prevPage !==null) { %>
+                      <a href="/forum?page=<%= prevPage %>"><button class="page-btn">Previous</button></a>
+                    <% } %>
+
+                    <% for (let i=1; i <=totalPages; i++) { %>
+                      <a href="/forum?page=<%= i %>">
+                        <button class="page-btn <%= i === current ? 'active' : '' %>">
+                              <%= i %>
+                        </button>
+                      </a>
+                    <% } %>
+
+                    <% if (nextPage !==null) { %>
+                      <a href="/forum?page=<%= nextPage %>"><button class="page-btn">Next</button></a>
+                    <% } %>
+                  </div>
+                  <% } %>
               </div>
             </div>
           </div>
@@ -202,16 +212,16 @@ https://templatemo.com/tm-577-liberty-market
 
     <!-- Scripts -->
     <!-- Bootstrap core JavaScript -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
 
-    <script src="../assets/js/isotope.min.js"></script>
-    <script src="../assets/js/owl-carousel.js"></script>
+    <script src="/js/isotope.min.js"></script>
+    <script src="/js/owl-carousel.js"></script>
 
-    <script src="../assets/js/tabs.js"></script>
-    <script src="../assets/js/popup.js"></script>
-    <script src="../assets/js/custom.js"></script>
-    <script src="../assets/js/forum.js"></script>
+    <script src="/js/tabs.js"></script>
+    <script src="/js/popup.js"></script>
+    <script src="/js/custom.js"></script>
+    <script src="/js/forum.js"></script>
 </body>
 
 </html>
