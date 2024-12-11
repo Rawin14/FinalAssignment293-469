@@ -39,23 +39,23 @@ function togglePasswordVisibility() {
 //     return true;
 //   }
 
-const token = document.cookie.split('; ').find(row => row.startsWith('token='));
 
-console.log(token);
+document.addEventListener("DOMContentLoaded", () => {
+  const profileToggle = document.querySelector(".dropdown-toggle");
+  const dropdownMenu = document.querySelector(".dropdown-menu");
 
-if (token) {
-  // If token exists, show the profile dropdown and hide login/register
-  document.getElementById('profile-link').style.display = 'block';
-  document.getElementById('login-register').style.display = 'none';
-} else {
-  // If no token, show login and register links
-  document.getElementById('profile-link').style.display = 'none';
-  document.getElementById('login-register').style.display = 'block';
-}
+  if (profileToggle && dropdownMenu) {
+    profileToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      dropdownMenu.style.display =
+        dropdownMenu.style.display === "block" ? "none" : "block";
+    });
 
- // Check if user is logged in by checking for the token
- document.querySelector('.dropdown-toggle').addEventListener('click', function(event) {
-  event.preventDefault();  // Prevent default link behavior
-  const dropdownMenu = this.nextElementSibling;  // Find the dropdown menu
-  dropdownMenu.classList.toggle('show');  // Toggle the visibility of the dropdown
+    // ซ่อน dropdown เมื่อคลิกข้างนอก
+    document.addEventListener("click", (event) => {
+      if (!profileToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.style.display = "none";
+      }
+    });
+  }
 });

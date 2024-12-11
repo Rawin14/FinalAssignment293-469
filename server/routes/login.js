@@ -22,30 +22,15 @@ router.get("/login", (req, res) => {
 
 // ตรวจสอบการ login
 router.post("/auth", async (req, res) => {
-  try {
-    const { username, password } = req.body; // Get username and password from the form
+  const { username, password } = req.body;
 
-    // Check if user exists
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    // Compare the password with the hashed password stored in the database
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    // เก็บข้อมูลผู้ใช้ใน session
-    req.session.userId = user._id;  // หรือเก็บข้อมูลอื่นๆ เช่น user.username
-
-    // Redirect the user to the home page after successful login
-    res.redirect("/home");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Server Error");
+  // Authentication logic...
+  const user = await User.findOne({ username });
+  if (user && (await bcrypt.compare(password, user.password))) {
+    req.session.userId = user._id; // บันทึก userId ใน session
+    res.redirect("/"); // กลับไปที่หน้า home
+  } else {
+    res.status(401).send("Invalid credentials");
   }
 });
 
@@ -159,11 +144,8 @@ router.get("/profile", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send("Failed to log out");
-    }
-    res.redirect("/home");
+  req.session.destroy(() => {
+    res.redirect("/"); // กลับไปหน้าแรก
   });
 });
 

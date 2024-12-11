@@ -249,7 +249,7 @@ body {
 .button-write a:hover {
     background-color: #407bff;
     color: #000000;
-    border: 1px solid #000000;
+    border: 1px solid #407bff;
 }
 
 /* ทำให้ .content-area เป็นคอนเทนเนอร์ */

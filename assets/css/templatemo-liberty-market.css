@@ -1325,24 +1325,23 @@ Footer Style
 */
 
 footer {
-  background: rgb(125, 90, 254);
-  background: linear-gradient(132deg, rgba(125, 90, 254, 1) 25%, rgba(160, 84, 244, 1) 100%);
+  background: #ccc;
   text-align: center;
   padding: 25px 0px;
 }
 
 footer p {
-  color: #fff;
+  color: #2b2b2b;
 }
 
 footer p a {
-  color: #fff;
+  color: #17159ccc;
   font-weight: 500;
   transition: all .3s;
 }
 
 footer p a:hover {
-  color: #fff;
+  color: #838383;
   opacity: 0.75;
 }
 
@@ -2228,18 +2227,22 @@ body {
   color: #000;
 }
 
-#profile-link {
-  display: none;  /* เริ่มต้นซ่อนเมนู */
-}
-
-#profile-link.show {
-  display: block;  /* แสดงเมนูเมื่อ login สำเร็จ */
-}
-
+/* ซ่อน dropdown-menu โดยเริ่มต้น */
 .dropdown-menu {
-  display: none;  /* ซ่อนเมนู dropdown */
+  display: none;
+  position: absolute;
+  background-color: white;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  min-width: 160px;
+  z-index: 1000; /* เพื่อให้ dropdown อยู่ด้านบน */
 }
 
-#profile-link:hover .dropdown-menu {
-  display: block;  /* แสดงเมนูเมื่อ hover */
+/* แสดง dropdown เมื่อ hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* ปรับ dropdown ให้อยู่ใต้ profile link */
+#profile-link {
+  position: relative;
 }

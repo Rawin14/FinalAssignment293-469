@@ -23,6 +23,8 @@
   <link rel="stylesheet" href="/css/animate.css">
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
   <link rel="stylesheet" href="/css/forum.css">
+  <link rel="stylesheet" href="/css/slider.css">
+  <link rel="stylesheet" href="/css/styles.css">
   <!--
 
 TemplateMo 577 Liberty Market
@@ -65,19 +67,24 @@ https://templatemo.com/tm-577-liberty-market
               <li><a href="/game">Game</a></li>
               <li><a href="/forum" class="active">Forum</a></li>
               <!-- Check if the user is logged in -->
-              <li id="profile-link" style="display:none;">
-                <a href="#" class="dropdown-toggle">Profile</a>
-                <ul class="dropdown-menu">
-                  <li><a href="/profile">My Profile</a></li>
-                  <li><a href="/logout">Logout</a></li>
-                </ul>
-              </li>
-
-              <!-- Show Login and Create Yours if user is not logged in -->
-              <li id="login-register">
-                <a href="/register">Create Yours</a>
-                <a href="/login">Login</a>
-              </li>
+              <% if (!isLoggedIn) { %>
+                <!-- แสดง Login และ Register ถ้ายังไม่ได้เข้าสู่ระบบ -->
+                <li id="login-register">
+                <li><a href="/register">Create Yours</a></li>
+                <li><a href="/login">Login</a></li>
+                </li>
+                <% } else { %>
+                  <!-- แสดง Dropdown Profile ถ้าเข้าสู่ระบบแล้ว -->
+                  <li id="profile-link" class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                      <%= username %>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a href="/profile">My Profile</a></li>
+                      <li><a href="/logout">Logout</a></li>
+                    </ul>
+                  </li>
+                  <% } %>
             </ul>
             <a class='menu-trigger'>
               <span>Menu</span>
@@ -110,27 +117,41 @@ https://templatemo.com/tm-577-liberty-market
             <div class="header-forum">
               <h1>Cybercrime</h1>
               <p>ฟอรัมทางการ</p>
-              <p>👤 ....</p>
+              <p>👤 <%= totalVisitorsToday %> </p>
             </div>
             <ul class="menu">
               <ul class="socialmenu">
-                <li><a href="#">X (Twitter)</a></li>
-                <li><a href="#">Facebook</a></li>
-                <li><a href="#">Youtube</a></li>
-                <li><a href="https://www.instagram.com/_iamrawin/?hl=en">Instagram</a></li>
+                <li><a href="#" class="color-text">X (Twitter)</a></li>
+                <li><a href="#" class="color-text">Facebook</a></li>
+                <li><a href="#" class="color-text">Youtube</a></li>
+                <li><a href="https://www.instagram.com/_iamrawin/?hl=en" class="color-text">Instagram</a></li>
               </ul>
               <li class="menu-item">
-                <span>โพสต์ทั้งหมด</span>
+                <span><a href="/forum" class="color-text">โพสต์ทั้งหมด</a></span>
               </li>
               <li class="menu-item">
-                <span>Type of Cybercrime
-                  <i class="arrow"></i>
+                <span>
+                  <p class="color-text">Type of Cybercrime
+                    <i class="arrow"></i>
+                  </p>
                 </span>
                 <ul class="submenu">
-                  <li><a href="#">Phishing</a></li>
-                  <li><a href="#">Ransomware</a></li>
-                  <li><a href="#">Social Engineering</a></li>
-                  <li><a href="#">Malware</a></li>
+                  <li>
+                    <a href="/forum/type/Phishing"
+                      class="<%= selectedType === 'Phishing' ? 'active' : '' %>">Phishing</a>
+                  </li>
+                  <li>
+                    <a href="/forum/type/Ransomware"
+                      class="<%= selectedType === 'Ransomware' ? 'active' : '' %>">Ransomware</a>
+                  </li>
+                  <li>
+                    <a href="/forum/type/Social Engineering"
+                      class="<%= selectedType === 'Social Engineering' ? 'active' : '' %>">Social
+                      Engineering</a>
+                  </li>
+                  <li>
+                    <a href="/forum/type/Malware" class="<%= selectedType === 'Malware' ? 'active' : '' %>">Malware</a>
+                  </li>
                 </ul>
               </li>
             </ul>
@@ -141,10 +162,12 @@ https://templatemo.com/tm-577-liberty-market
           <div class="header-forum">
             <div class="sidebar">
               <div class="search-section">
-                <h1>โพสต์ทั้งหมด</h1>
+                <h1>โพสต์ทั้งหมด<% if (selectedType) { %> - <%= selectedType %>
+                      <% } %>
+                </h1>
                 <div class="btn-write">
                   <div class="button-write">
-                    <a href="/write" class="plus-link">เพิ่ม</a>
+                    <a href="<%= isLoggedIn ? '/write' : '/login' %>" class="plus-link">เพิ่ม</a>
                   </div>
                 </div>
               </div>
@@ -161,18 +184,21 @@ https://templatemo.com/tm-577-liberty-market
 
                 <!-- Articles/Forum -->
                 <div class="content-area">
-                  <% data.forEach(post=> { %>
-                    <div class="post-item"> <!-- เพิ่ม div สำหรับแต่ละโพสต์ -->
-                      <a href="/post/<%= post._id %>">
-                        <h3 class="color-text">
-                          <%= post.title %>
-                        </h3>
-                        <div class="formatted-date color-text" data-date="<%= post.created_date %>"></div>
-                      </a>
-                    </div> <!-- ปิด div ของแต่ละโพสต์ -->
-                    <% }) %>
+                  <% if (data.length> 0) { %>
+                    <% data.forEach(post=> { %>
+                      <div class="post-item">
+                        <a href="/post/<%= post._id %>">
+                          <h3 class="color-text">
+                            <%= post.title %>
+                          </h3>
+                          <div class="formatted-date color-text" data-date="<%= post.created_date %>"></div>
+                        </a>
+                      </div>
+                      <% }) %>
+                        <% } else { %>
+                          <p>No posts available for this type.</p>
+                          <% } %>
                 </div>
-
 
                 <!-- Pagination Section -->
                 <% if (totalPages> 1) { %>
@@ -202,36 +228,35 @@ https://templatemo.com/tm-577-liberty-market
     </div>
   </div>
 
-
-
-  <footer>
-    <footer>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <p>Copyright © 2024 <a href="#">293-469</a> JeerapanRavidanai Co., Ltd. All rights reserved.
-              &nbsp;&nbsp;
-              Designed by <a title="HTML CSS Templates" rel="sponsored" href="https://templatemo.com"
-                target="_blank">293-469</a></p>
-          </div>
-        </div>
-      </div>
-    </footer>
-
-    <!-- Scripts -->
-    <!-- Bootstrap core JavaScript -->
-    <script src="/jquery/jquery.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.min.js"></script>
-
-    <script src="/js/isotope.min.js"></script>
-    <script src="/js/owl-carousel.js"></script>
-
-    <script src="/js/tabs.js"></script>
-    <script src="/js/popup.js"></script>
-    <script src="/js/custom.js"></script>
-    <script src="/js/forum.js"></script>
-    <script src="/js/post.js"></script>
-    <script src="/js/login.js"></script>
 </body>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <p>Copyright © 2024 <a href="#">293-469</a> JeerapanRavidanai Co., Ltd. All rights reserved.
+          &nbsp;&nbsp;
+          Designed by <a title="HTML CSS Templates" rel="sponsored" href="https://templatemo.com"
+            target="_blank">293-469</a></p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<!-- Bootstrap core JavaScript -->
+<script src="/jquery/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="/js/isotope.min.js"></script>
+<script src="/js/owl-carousel.js"></script>
+
+<script src="/js/tabs.js"></script>
+<script src="/js/popup.js"></script>
+<script src="/js/custom.js"></script>
+<script src="/js/forum.js"></script>
+<script src="/js/post.js"></script>
+<script src="/js/login.js"></script>
+
 
 </html>

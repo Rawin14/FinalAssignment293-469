@@ -2,29 +2,62 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Visitor = require("../models/visitor");
 
+router.use((req, res, next) => {
+  res.locals.isLoggedIn = !!req.session.userId;
+  // console.log("isLoggedIn:", res.locals.isLoggedIn); // ตรวจสอบค่า
+  next();
+});
+async function checkAuth(req, res, next) {
+  if (req.session && req.session.userId) {
+    try {
+      const user = await User.findById(req.session.userId); // ใช้ await แทน callback
+      if (!user) {
+        return next(); // ถ้าไม่พบผู้ใช้ ไปยัง middleware ถัดไป
+      }
+      req.user = user; // เก็บข้อมูลผู้ใช้ใน req
+      res.locals.user = user; // ส่งข้อมูลไปยัง View
+      next(); // ดำเนินการต่อ
+    } catch (err) {
+      console.error("Error in checkAuth middleware:", err);
+      next(); // ไปยัง middleware ถัดไปในกรณีเกิดข้อผิดพลาด
+    }
+  } else {
+    next(); // ดำเนินการต่อถ้าไม่ได้ล็อกอิน
+  }
+}
+
+// ใช้ Middleware นี้กับทุก Route
+router.use(checkAuth);
 
 //Routes
-router.get("", (req, res) => {
-  res.render("index");
+router.get("/", (req, res) => {
+  res.render("index", { isLoggedIn: !!req.user, username: req.user?.username });
 });
 
 router.get("/home", (req, res) => {
-  if (req.session.userId) {
-    // ถ้าผู้ใช้ล็อกอินแล้ว ให้ส่งค่า dropdown profile
-    res.render('index', { isLoggedIn: true });
+  if (req.user) {
+    res.render("index", { isLoggedIn: true, username: req.user.username });
   } else {
-    // ถ้าผู้ใช้ยังไม่ได้ล็อกอิน
-    res.render('index', { isLoggedIn: false });
+    res.render("index", { isLoggedIn: false, username: null });
   }
 });
 
 router.get("/types", (req, res) => {
-  res.render("types");
+  if (req.user) {
+    res.render("types", { isLoggedIn: true, username: req.user.username });
+  } else {
+    res.render("types", { isLoggedIn: false, username: null });
+  }
 });
 
 router.get("/game", (req, res) => {
-  res.render("game");
+  if (req.user) {
+    res.render("game", { isLoggedIn: true, username: req.user.username });
+  } else {
+    res.render("game", { isLoggedIn: false, username: null });
+  }
 });
 
 // function insertPostData(req, res) {
@@ -42,23 +75,48 @@ router.get("/game", (req, res) => {
 router.get("/forum", async (req, res) => {
   try {
     const locals = {
-      title: "Post Details",
-      description: "Viewing a single post",
+      title: "Forum",
+      description: "View and explore posts",
     };
+
+    const ip = req.clientIp; // ดึง IP จาก request
+    const today = new Date();
+    const dateStr = today.toISOString().split("T")[0]; // ใช้แค่วัน (yyyy-mm-dd)
+
+    // ตรวจสอบว่า IP นี้เคยเข้ามาในวันนี้หรือยัง
+    const existingVisitor = await Visitor.findOne({
+      ip,
+      date: { $gte: new Date(dateStr) },
+    });
+
+    if (!existingVisitor) {
+      // ถ้ายังไม่เคยเข้ามาหรือเป็นวันที่ใหม่ ให้บันทึก IP และวันที่
+      const newVisitor = new Visitor({ ip, date: today });
+      await newVisitor.save();
+      console.log("New visit recorded from IP: " + ip);
+    } else {
+      console.log("IP " + ip + " has already visited today.");
+    }
+
+    // นับจำนวนผู้เข้าชมทั้งหมด
+    const totalVisitorsToday = await Visitor.countDocuments({
+      date: { $gte: new Date(dateStr) },
+    });
 
     const perPage = 5;
     const page = parseInt(req.query.page) || 1;
+    const type = req.params.type || null; // รับ type จาก query parameter
 
-    // ดึงข้อมูลโพสต์ที่จัดเรียงตามวันที่ล่าสุด
-    const data = await Post.find({})
+    // Query สำหรับกรองโพสต์ตามประเภท
+    const filter = type ? { types: type } : {}; // ถ้าไม่มี type จะดึงโพสต์ทั้งหมด
+
+    const data = await Post.find(filter)
       .sort({ created_date: -1 })
       .skip((page - 1) * perPage)
       .limit(perPage);
 
-    // นับจำนวนโพสต์ทั้งหมด
-    const count = await Post.countDocuments();
+    const count = await Post.countDocuments(filter);
 
-    // คำนวณค่าที่จำเป็นสำหรับ Pagination
     const totalPages = Math.ceil(count / perPage);
     const hasNextPage = page < totalPages;
     const hasPrevPage = page > 1;
@@ -70,6 +128,75 @@ router.get("/forum", async (req, res) => {
       nextPage: hasNextPage ? page + 1 : null,
       prevPage: hasPrevPage ? page - 1 : null,
       totalPages,
+      selectedType: type, // ส่งประเภทไปยัง View
+      isLoggedIn: !!req.user,
+      username: req.user ? req.user.username : null,
+      totalVisitorsToday: totalVisitorsToday, // ส่งจำนวนผู้เข้าชมไปยัง EJS
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.get("/forum/type/:type", async (req, res) => {
+  try {
+    const locals = {
+      title: "Forum",
+      description: "View and explore posts",
+    };
+
+    const ip = req.clientIp; // ดึง IP จาก request
+    const today = new Date();
+    const dateStr = today.toISOString().split("T")[0]; // ใช้แค่วัน (yyyy-mm-dd)
+
+    // ตรวจสอบว่า IP นี้เคยเข้ามาในวันนี้หรือยัง
+    const existingVisitor = await Visitor.findOne({
+      ip,
+      date: { $gte: new Date(dateStr) },
+    });
+
+    if (!existingVisitor) {
+      // ถ้ายังไม่เคยเข้ามาหรือเป็นวันที่ใหม่ ให้บันทึก IP และวันที่
+      const newVisitor = new Visitor({ ip, date: today });
+      await newVisitor.save();
+      console.log("New visit recorded from IP: " + ip);
+    } else {
+      console.log("IP " + ip + " has already visited today.");
+    }
+
+    // นับจำนวนผู้เข้าชมทั้งหมด
+    const totalVisitorsToday = await Visitor.countDocuments({
+      date: { $gte: new Date(dateStr) },
+    });
+
+    const perPage = 5;
+    const page = parseInt(req.query.page) || 1;
+    const type = req.params.type || null; // รับ type จาก query parameter
+
+    // Query สำหรับกรองโพสต์ตามประเภท
+    const filter = type ? { types: type } : {}; // ถ้าไม่มี type จะดึงโพสต์ทั้งหมด
+
+    const data = await Post.find(filter)
+      .sort({ created_date: -1 })
+      .skip((page - 1) * perPage)
+      .limit(perPage);
+
+    const count = await Post.countDocuments(filter);
+
+    const totalPages = Math.ceil(count / perPage);
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 1;
+
+    res.render("forumtypes", {
+      locals,
+      data,
+      nextPage: hasNextPage ? page + 1 : null,
+      prevPage: hasPrevPage ? page - 1 : null,
+      current: page,
+      totalPages,
+      selectedType: type, // Send selected type to EJS
+      totalVisitorsToday: totalVisitorsToday, // ส่งจำนวนผู้เข้าชมไปยัง EJS
     });
   } catch (error) {
     console.log(error);
@@ -84,10 +211,47 @@ router.get("/post/:id", async (req, res) => {
       description: "Viewing a single post",
     };
 
-    let slug = req.params.id;
+    const ip = req.clientIp; // ดึง IP จาก request
+    const today = new Date();
+    const dateStr = today.toISOString().split("T")[0]; // ใช้แค่วัน (yyyy-mm-dd)
 
-    const data = await Post.findById({ _id: slug });
-    res.render("post", { locals, data });
+    // ตรวจสอบว่า IP นี้เคยเข้ามาในวันนี้หรือยัง
+    const existingVisitor = await Visitor.findOne({
+      ip,
+      date: { $gte: new Date(dateStr) },
+    });
+
+    if (!existingVisitor) {
+      // ถ้ายังไม่เคยเข้ามาหรือเป็นวันที่ใหม่ ให้บันทึก IP และวันที่
+      const newVisitor = new Visitor({ ip, date: today });
+      await newVisitor.save();
+      console.log("New visit recorded from IP: " + ip);
+    } else {
+      console.log("IP " + ip + " has already visited today.");
+    }
+
+    // นับจำนวนผู้เข้าชมทั้งหมด
+    const totalVisitorsToday = await Visitor.countDocuments({
+      date: { $gte: new Date(dateStr) },
+    });
+
+    const type = req.params.type || null;
+    const slug = req.params.id;
+    const filter = type ? { types: type } : {};
+    const data = await Post.findById(slug, filter);
+    // รับ type จาก query parameter
+
+    // Query สำหรับกรองโพสต์ตามประเภท
+    // ถ้าไม่มี type จะดึงโพสต์ทั้งหมด
+
+    res.render("post", {
+      locals,
+      data,
+      isLoggedIn: !!req.user,
+      username: req.user ? req.user.username : null,
+      selectedType: type,
+      totalVisitorsToday: totalVisitorsToday,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
@@ -95,7 +259,10 @@ router.get("/post/:id", async (req, res) => {
 });
 
 router.get("/write", (req, res) => {
-  res.render("writeforum");
+  res.render("writeforum", {
+    isLoggedIn: !!req.user,
+    username: req.user ? req.user.username : null,
+  });
 });
 
 router.get("/register", (req, res) => {
@@ -104,7 +271,5 @@ router.get("/register", (req, res) => {
 router.get("/login", (req, res) => {
   res.render("login");
 });
-
-
 
 module.exports = router;
