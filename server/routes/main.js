@@ -10,7 +10,13 @@ router.get("", (req, res) => {
 });
 
 router.get("/home", (req, res) => {
-  res.render("index");
+  if (req.session.userId) {
+    // ถ้าผู้ใช้ล็อกอินแล้ว ให้ส่งค่า dropdown profile
+    res.render('index', { isLoggedIn: true });
+  } else {
+    // ถ้าผู้ใช้ยังไม่ได้ล็อกอิน
+    res.render('index', { isLoggedIn: false });
+  }
 });
 
 router.get("/types", (req, res) => {

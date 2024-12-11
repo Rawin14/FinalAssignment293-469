@@ -17,6 +17,7 @@
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
         rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="/css/fontawesome.css">
     <link rel="stylesheet" href="/css/templatemo-liberty-market.css">
@@ -56,7 +57,7 @@ https://templatemo.com/tm-577-liberty-market
                 <div class="col-12">
                     <nav class="main-nav">
                         <!-- ***** Logo Start ***** -->
-                        <a href="/index" class="logo">
+                        <a href="/home" class="logo">
                             <img src="/images/logo.png" alt="">
                         </a>
                         <!-- ***** Logo End ***** -->
@@ -66,10 +67,20 @@ https://templatemo.com/tm-577-liberty-market
                             <li><a href="/types">Type</a></li>
                             <li><a href="/game">Game</a></li>
                             <li><a href="/forum" class="active">Forum</a></li>
-                            <div>
-                                <li><a href="/register">Create Yours</a></li>
-                                <li><a href="/login">Login</a></li>
-                            </div>
+                            <!-- Check if the user is logged in -->
+                            <li id="profile-link" style="display:none;">
+                                <a href="#" class="dropdown-toggle">Profile</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="/profile">My Profile</a></li>
+                                    <li><a href="/logout">Logout</a></li>
+                                </ul>
+                            </li>
+
+                            <!-- Show Login and Create Yours if user is not logged in -->
+                            <li id="login-register">
+                                <a href="/register">Create Yours</a>
+                                <a href="/login">Login</a>
+                            </li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -135,12 +146,12 @@ https://templatemo.com/tm-577-liberty-market
                         <form id="forumform" method="POST" action="/write">
                             <div class="sidebar">
                                 <div class="search-section">
-                                    <h1>เขียน</h1>
-                                    <div class="btn-write">
-                                        <div class="button-write">
-                                            <button type="submit" class="button-write">บันทึก</button>
-                                        </div>
-                                    </div>
+                                    <button id="back-button" onclick="history.back()">
+                                        <i class="fas fa-arrow-left"></i>
+                                    </button>
+                                    <h1 class="text-left">เขียน</h1>
+                                    <button type="submit" class="btn btn-primary">บันทึก</button>
+
                                 </div>
                                 <div class="line"></div>
                                 <div class="write-container">
@@ -203,6 +214,8 @@ https://templatemo.com/tm-577-liberty-market
         <script src="/js/popup.js"></script>
         <script src="/js/custom.js"></script>
         <script src="/js/forum.js"></script>
+        <script src="/js/post.js"></script>
+        <script src="/js/login.js"></script>
 </body>
 
 </html>

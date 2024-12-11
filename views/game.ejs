@@ -64,10 +64,20 @@ https://templatemo.com/tm-577-liberty-market
               <li><a href="/types">Type</a></li>
               <li><a href="/game" class="active">Game</a></li>
               <li><a href="/forum">Forum</a></li>
-              <div>
-                <li><a href="/register">Create Yours</a></li>
-                <li><a href="/login">Login</a></li>
-              </div>
+              <!-- Check if the user is logged in -->
+              <li id="profile-link" style="display:none;">
+                <a href="#" class="dropdown-toggle">Profile</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/profile">My Profile</a></li>
+                  <li><a href="/logout">Logout</a></li>
+                </ul>
+              </li>
+
+              <!-- Show Login and Create Yours if user is not logged in -->
+              <li id="login-register">
+                <a href="/register">Create Yours</a>
+                <a href="/login">Login</a>
+              </li>
             </ul>
             <a class='menu-trigger'>
               <span>Menu</span>
@@ -154,5 +164,6 @@ https://templatemo.com/tm-577-liberty-market
 <script src="/js/tabs.js"></script>
 <script src="/js/popup.js"></script>
 <script src="/js/custom.js"></script>
+<script src="/js/login.js"></script>
 
 </html>

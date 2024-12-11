@@ -41,3 +41,7 @@ document.getElementById("content").addEventListener("input", function () {
 });
 
 quill.format("color", "black");
+
+function goBack() {
+  window.history.back();
+}

@@ -5,6 +5,7 @@
     max-width: 600px;
     margin: auto;
 }
+
 .write-container textarea {
     width: 100%;
     height: 100px;
@@ -14,11 +15,13 @@
     border-radius: 5px;
     resize: vertical;
 }
+
 .toolbar {
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
 }
+
 .toolbar button {
     background: #007bff;
     color: #000000;
@@ -28,5 +31,10 @@
     cursor: pointer;
 }
 
-
-
+#back-button {
+    position: relative;
+    /* หรือ relative ขึ้นอยู่กับโครงสร้าง */
+    background: none;
+    border: none;
+    cursor: pointer;
+}

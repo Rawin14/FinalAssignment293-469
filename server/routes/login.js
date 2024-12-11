@@ -5,7 +5,6 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const jwtSecret = process.env.JWT_SECRET;
 
 router.get("/login", (req, res) => {
   try {
@@ -24,21 +23,25 @@ router.get("/login", (req, res) => {
 // ตรวจสอบการ login
 router.post("/auth", async (req, res) => {
   try {
-    const { username, password } = req.body; // ดึงข้อมูล username และ password จาก form
+    const { username, password } = req.body; // Get username and password from the form
 
-    console.log("Request Body:", req.body); // log ข้อมูลใน console
+    // Check if user exists
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
+
+    // Compare the password with the hashed password stored in the database
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    const token = jwt.sign({ id: user._id }, jwtSecret);
-    res.cookie("token", token, { httpOnly: true });
 
+    // เก็บข้อมูลผู้ใช้ใน session
+    req.session.userId = user._id;  // หรือเก็บข้อมูลอื่นๆ เช่น user.username
+
+    // Redirect the user to the home page after successful login
     res.redirect("/home");
   } catch (error) {
     console.error(error);
@@ -132,6 +135,36 @@ router.post('/write', async (req, res) => {
     console.error('Error saving post:', err);
     res.status(500).send('Error saving post');
   }
+});
+
+router.get("/profile", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.redirect("/login");  // Redirect to login if no token
+    }
+
+    const decoded = jwt.verify(token, jwtSecret);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.redirect("/login");  // Redirect if no user is found
+    }
+
+    res.render("profile", { user });  // Render profile page with user data
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send("Failed to log out");
+    }
+    res.redirect("/home");
+  });
 });
 
 module.exports = router;

@@ -21,13 +21,13 @@ app.use(cookieParser());
 
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: "293-469",
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
     }),
-    //cookie: { maxAge: new Date(Date.now() + 3600000) }
+    cookie: {secure: false},
   })
 );
 
@@ -53,6 +53,8 @@ app.get("/register", require("./server/routes/main"));
 app.get("/login", require("./server/routes/main"));
 app.get("/post/:id", require("./server/routes/main"));
 app.post("/write", require("./server/routes/login"));
+app.get("/profile", require("./server/routes/login"));
+app.get("/logout", require("./server/routes/login"));
 
 
 

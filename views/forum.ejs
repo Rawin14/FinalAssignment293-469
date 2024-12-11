@@ -54,7 +54,7 @@ https://templatemo.com/tm-577-liberty-market
         <div class="col-12">
           <nav class="main-nav">
             <!-- ***** Logo Start ***** -->
-            <a href="/index" class="logo">
+            <a href="/home" class="logo">
               <img src="/images/logo.png" alt="">
             </a>
             <!-- ***** Logo End ***** -->
@@ -64,10 +64,20 @@ https://templatemo.com/tm-577-liberty-market
               <li><a href="/types">Type</a></li>
               <li><a href="/game">Game</a></li>
               <li><a href="/forum" class="active">Forum</a></li>
-              <div>
-                <li><a href="/register">Create Yours</a></li>
-                <li><a href="/login">Login</a></li>
-              </div>
+              <!-- Check if the user is logged in -->
+              <li id="profile-link" style="display:none;">
+                <a href="#" class="dropdown-toggle">Profile</a>
+                <ul class="dropdown-menu">
+                  <li><a href="/profile">My Profile</a></li>
+                  <li><a href="/logout">Logout</a></li>
+                </ul>
+              </li>
+
+              <!-- Show Login and Create Yours if user is not logged in -->
+              <li id="login-register">
+                <a href="/register">Create Yours</a>
+                <a href="/login">Login</a>
+              </li>
             </ul>
             <a class='menu-trigger'>
               <span>Menu</span>
@@ -151,15 +161,13 @@ https://templatemo.com/tm-577-liberty-market
 
                 <!-- Articles/Forum -->
                 <div class="content-area">
-                  <% data.forEach(post => { %>
+                  <% data.forEach(post=> { %>
                     <div class="post-item"> <!-- เพิ่ม div สำหรับแต่ละโพสต์ -->
                       <a href="/post/<%= post._id %>">
                         <h3 class="color-text">
                           <%= post.title %>
                         </h3>
-                        <span class="color-text">
-                          <%= post.created_date %>
-                        </span>
+                        <div class="formatted-date color-text" data-date="<%= post.created_date %>"></div>
                       </a>
                     </div> <!-- ปิด div ของแต่ละโพสต์ -->
                     <% }) %>
@@ -171,19 +179,19 @@ https://templatemo.com/tm-577-liberty-market
                   <div class="pagination">
                     <% if (prevPage !==null) { %>
                       <a href="/forum?page=<%= prevPage %>"><button class="page-btn">Previous</button></a>
-                    <% } %>
+                      <% } %>
 
-                    <% for (let i=1; i <=totalPages; i++) { %>
-                      <a href="/forum?page=<%= i %>">
-                        <button class="page-btn <%= i === current ? 'active' : '' %>">
+                        <% for (let i=1; i <=totalPages; i++) { %>
+                          <a href="/forum?page=<%= i %>">
+                            <button class="page-btn <%= i === current ? 'active' : '' %>">
                               <%= i %>
-                        </button>
-                      </a>
-                    <% } %>
+                            </button>
+                          </a>
+                          <% } %>
 
-                    <% if (nextPage !==null) { %>
-                      <a href="/forum?page=<%= nextPage %>"><button class="page-btn">Next</button></a>
-                    <% } %>
+                            <% if (nextPage !==null) { %>
+                              <a href="/forum?page=<%= nextPage %>"><button class="page-btn">Next</button></a>
+                              <% } %>
                   </div>
                   <% } %>
               </div>
@@ -222,6 +230,8 @@ https://templatemo.com/tm-577-liberty-market
     <script src="/js/popup.js"></script>
     <script src="/js/custom.js"></script>
     <script src="/js/forum.js"></script>
+    <script src="/js/post.js"></script>
+    <script src="/js/login.js"></script>
 </body>
 
 </html>
