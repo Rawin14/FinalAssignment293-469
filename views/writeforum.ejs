@@ -52,34 +52,34 @@ https://templatemo.com/tm-577-liberty-market
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
         <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <nav class="main-nav">
-                <!-- ***** Logo Start ***** -->
-                <a href="/index" class="logo">
-                  <img src="/images/logo.png" alt="">
-                </a>
-                <!-- ***** Logo End ***** -->
-                <!-- ***** Menu Start ***** -->
-                <ul class="nav">
-                  <li><a href="/home">Home</a></li>
-                  <li><a href="/types">Type</a></li>
-                  <li><a href="/game">Game</a></li>
-                  <li><a href="/forum" class="active">Forum</a></li>
-                  <div>
-                    <li><a href="/register">Create Yours</a></li>
-                    <li><a href="/login">Login</a></li>
-                  </div>
-                </ul>
-                <a class='menu-trigger'>
-                  <span>Menu</span>
-                </a>
-                <!-- ***** Menu End ***** -->
-              </nav>
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="/index" class="logo">
+                            <img src="/images/logo.png" alt="">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="/home">Home</a></li>
+                            <li><a href="/types">Type</a></li>
+                            <li><a href="/game">Game</a></li>
+                            <li><a href="/forum" class="active">Forum</a></li>
+                            <div>
+                                <li><a href="/register">Create Yours</a></li>
+                                <li><a href="/login">Login</a></li>
+                            </div>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
             </div>
-          </div>
         </div>
-      </header>
+    </header>
     <!-- ***** Header Area End ***** -->
     <div class="header-text">
         <div class="page-heading normal-space">
@@ -132,39 +132,46 @@ https://templatemo.com/tm-577-liberty-market
 
                 <div class="col-lg-9">
                     <div class="header-forum">
-                        <div class="sidebar">
-                            <div class="search-section">
-                                <h1>เขียน</h1>
-                                <div class="btn-write">
-                                    <div class="button-write">
-                                        <a href="/forum" class="plus-link">save</a>
+                        <form id="forumform" method="POST" action="/write">
+                            <div class="sidebar">
+                                <div class="search-section">
+                                    <h1>เขียน</h1>
+                                    <div class="btn-write">
+                                        <div class="button-write">
+                                            <button type="submit" class="button-write">บันทึก</button>
+                                        </div>
                                     </div>
-                                </div>                              
-                            </div>
-                            <div class="line"></div>
-                            <div class="write-container">
-                                <div class="toolbar">
-                                    <select>
-                                        <option>Select a board...</option>
-                                        <option>Phishing</option>
-                                        <option>Ransomware</option>
-                                        <option>Social Engineering</option>
-                                        <option>Malware</option>
-                                    </select>
+                                </div>
+                                <div class="line"></div>
+                                <div class="write-container">
+                                    <div class="toolbar">
+                                        <select id="types" name="types" required>
+                                            <option value="">Select a board...</option>
+                                            <option value="Phishing">Phishing</option>
+                                            <option value="Ransomware">Ransomware</option>
+                                            <option value="Social Engineering">Social Engineering</option>
+                                            <option value="Malware">Malware</option>
+                                        </select>
+                                    </div>
+                                    <input type="text" name="title" id="title" class="" placeholder="Enter a title..."
+                                        style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;"
+                                        required>
 
-                                </div>
-                                <input type="text" placeholder="Enter a title..."
-                                    style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
-                                <div id="editor">
+
+                                    <!-- Quill Editor -->
+                                    <div id="editor" style="height: 300px;"></div>
+
+                                    <!-- Hidden Textarea -->
+                                    <textarea name="content" id="content" style="display: none;"></textarea>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+
 
 
 

@@ -52,6 +52,9 @@ app.get("/write", require("./server/routes/main"));
 app.get("/register", require("./server/routes/main"));
 app.get("/login", require("./server/routes/main"));
 app.get("/post/:id", require("./server/routes/main"));
+app.post("/write", require("./server/routes/login"));
+
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);

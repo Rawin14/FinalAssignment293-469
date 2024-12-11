@@ -37,10 +37,9 @@ router.post("/auth", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
     const token = jwt.sign({ id: user._id }, jwtSecret);
-    res.cookie('token', token, { httpOnly: true });
+    res.cookie("token", token, { httpOnly: true });
 
-    res.redirect('/home');
-
+    res.redirect("/home");
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");
@@ -111,6 +110,27 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send("Server Error");
+  }
+});
+
+router.post('/write', async (req, res) => {
+  try {
+    const { title, types, content } = req.body;
+
+    // สร้างโพสต์ใหม่
+    const newPost = new Post({
+      title: title,
+      types: types,
+      content: content,  // HTML ที่ได้รับจาก Quill Editor
+    });
+
+    // ใช้ await แทนการใช้ callback
+    await newPost.save();
+    
+    res.redirect('/forum'); // ไปยังหน้าฟอรัม
+  } catch (err) {
+    console.error('Error saving post:', err);
+    res.status(500).send('Error saving post');
   }
 });
 
