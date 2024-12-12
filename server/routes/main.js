@@ -3,14 +3,15 @@ const router = express.Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Visitor = require("../models/visitor");
-const Comment = require('../models/Comment');
-
+const Comment = require("../models/Comment");
+const upload = require('../middleware/upload'); // ไฟล์ Multer ที่ตั้งค่าไว้
 
 router.use((req, res, next) => {
   res.locals.isLoggedIn = !!req.session.userId;
   // console.log("isLoggedIn:", res.locals.isLoggedIn); // ตรวจสอบค่า
   next();
 });
+
 async function checkAuth(req, res, next) {
   if (req.session && req.session.userId) {
     try {
@@ -65,9 +66,9 @@ router.get("/game", (req, res) => {
 // function insertPostData(req, res) {
 //   Post.insertMany([
 //     {
-//       title: "Kuy",
+//       title: "",
 //       description:
-//         "Csdfasdfsdfsdfsdfsdfsdfsdfgdophgdojhkldghiodjklhfiogdhjfuohfhjdhosgdfogjdfjhgjkdfgjkdjkgdjkgdflgdfgjkdjkgjdkgkdfglks",
+//         "",
 //     },
 //   ]);
 // }
@@ -216,7 +217,9 @@ router.get("/post/:id", async (req, res) => {
     const today = new Date();
     const dateStr = today.toISOString().split("T")[0]; // ใช้แค่วัน (yyyy-mm-dd)
     const post = await Post.findById(req.params.id);
-    const comments = await Comment.find({ postId: post._id }).sort({ created_at: -1 });
+    const comments = await Comment.find({ postId: post._id }).sort({
+      created_at: -1,
+    });
 
     // ตรวจสอบว่า IP นี้เคยเข้ามาในวันนี้หรือยัง
     const existingVisitor = await Visitor.findOne({
@@ -263,7 +266,7 @@ router.get("/post/:id", async (req, res) => {
   }
 });
 
-router.post('/post/:id/comment', async (req, res) => {
+router.post("/post/:id/comment", async (req, res) => {
   try {
     const { content } = req.body;
     const postId = req.params.id;
@@ -283,7 +286,7 @@ router.post('/post/:id/comment', async (req, res) => {
     res.redirect(`/post/${postId}`); // กลับไปหน้าโพสต์เดิม
   } catch (error) {
     console.log(error);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
@@ -347,5 +350,35 @@ router.get("/register", (req, res) => {
 router.get("/login", (req, res) => {
   res.render("login");
 });
+
+// Profile route
+router.get("/profile", checkAuth, async (req, res) => {
+  try {
+    // ใช้ user ID จาก session (req.user._id ถูกกำหนดโดย Passport หรือ session)
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+    user.dob = user.dob || null;
+    // ส่งข้อมูลผู้ใช้ไปยัง EJS
+    res.render("profile", {
+      username: user.username, // ส่ง username
+      user,// ส่ง object ผู้ใช้ทั้งหมด
+    }); 
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.get("/about", (req, res) => {
+  if (req.user) {
+    res.render("aboutus", { isLoggedIn: true, username: req.user.username });
+  } else {
+    res.render("aboutus", { isLoggedIn: false, username: null });
+  }
+});
+
 
 module.exports = router;

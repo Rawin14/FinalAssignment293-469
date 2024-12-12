@@ -56,23 +56,30 @@ router.post("/auth", async (req, res) => {
 // สมัครสมาชิก
 router.post("/register", async (req, res) => {
   try {
-    const {
-      username,
-      password,
-      surname,
-      lastname,
-      country,
-      province,
-      address,
-      zipcode,
-      mail,
-      TelNum,
-      gender,
-      dob,
-      myfiles,
-    } = req.body; // ดึงข้อมูล username และ password จาก form
+    // ตรวจสอบว่า user ได้รับการยืนยันตัวตนแล้วหรือไม่
+    const { 
+      username, 
+      password, 
+      surname, 
+      lastname, 
+      country, 
+      province, 
+      address, 
+      zipcode, 
+      mail, 
+      TelNum, 
+      gender, 
+      dob 
+    } = req.body; // ดึงข้อมูลอื่นๆ จากฟอร์ม
+
+    // หากมีการอัปโหลดไฟล์
+    let myfiles = req.file ? `/uploads/${req.file.filename}` : '/uploads/default-profile.png'; // ใช้ path ของไฟล์ที่อัปโหลด หรือไฟล์ default
+
+    // แฮชพาสเวิร์ด
     const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
+      // สร้างผู้ใช้ใหม่ในฐานข้อมูล
       const user = await User.create({
         username,
         password: hashedPassword,
@@ -86,12 +93,13 @@ router.post("/register", async (req, res) => {
         TelNum,
         gender,
         dob,
-        myfiles,
+        myfiles, // ใช้ path ของไฟล์ที่อัปโหลด
       });
-      res.status(201).json({ message: "User Created", user });
+
+      res.redirect("/login");
     } catch (error) {
       if (error.code === 11000) {
-        res.status(409).json({ message: "Username already in use" });
+        return res.status(409).json({ message: "Username already in use" });
       }
       res.status(500).json({ message: "Internal Server Error" });
     }
@@ -100,6 +108,7 @@ router.post("/register", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
 
 router.post('/write', async (req, res) => {
   try {
@@ -122,26 +131,26 @@ router.post('/write', async (req, res) => {
   }
 });
 
-router.get("/profile", async (req, res) => {
-  try {
-    const token = req.cookies.token;
-    if (!token) {
-      return res.redirect("/login");  // Redirect to login if no token
-    }
+// router.get("/profile", async (req, res) => {
+//   try {
+//     const token = req.cookies.token;
+//     if (!token) {
+//       return res.redirect("/login");  // Redirect to login if no token
+//     }
 
-    const decoded = jwt.verify(token, jwtSecret);
-    const user = await User.findById(decoded.id);
+//     const decoded = jwt.verify(token, jwtSecret);
+//     const user = await User.findById(decoded.id);
 
-    if (!user) {
-      return res.redirect("/login");  // Redirect if no user is found
-    }
+//     if (!user) {
+//       return res.redirect("/login");  // Redirect if no user is found
+//     }
 
-    res.render("profile", { user });  // Render profile page with user data
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Server Error");
-  }
-});
+//     res.render("profile", { user });  // Render profile page with user data
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Server Error");
+//   }
+// });
 
 router.get("/logout", (req, res) => {
   req.session.destroy(() => {

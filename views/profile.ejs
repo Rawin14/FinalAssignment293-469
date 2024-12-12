@@ -1,3 +1,164 @@
-<h1>Welcome, <%= user.username %></h1>
-<p>Email: <%= user.email %></p>
-<!-- Display other user details -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/fontawesome.css">
+    <link rel="stylesheet" href="/css/templatemo-liberty-market.css">
+    <link rel="stylesheet" href="/css/owl.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="/home" class="logo">
+                            <img src="/images/logo.png" alt="">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="/home">Home</a></li>
+                            <li><a href="/types" class="active">Type</a></li>
+                            <li><a href="/game">Game</a></li>
+                            <li><a href="/forum">Forum</a></li>
+                            <!-- Check if the user is logged in -->
+                            <% if (!isLoggedIn) { %>
+                                <!-- แสดง Login และ Register ถ้ายังไม่ได้เข้าสู่ระบบ -->
+                                <li id="login-register">
+                                <li><a href="/register">Create Yours</a></li>
+                                <li><a href="/login">Login</a></li>
+                                </li>
+                                <% } else { %>
+                                    <!-- แสดง Dropdown Profile ถ้าเข้าสู่ระบบแล้ว -->
+                                    <li id="profile-link" class="dropdown">
+                                        <a href="#" class="dropdown-toggle">
+                                            <%= username %>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/profile">My Profile</a></li>
+                                            <li><a href="/logout">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                    <% } %>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                    <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                    <span class="font-weight-bold">
+                        <%= user.username %>
+
+                    </span>
+                    <span class="text-black-50">
+                        <%= user.email %>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-9 border-right">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Profile Information</h4>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6"><label class="labels">First Name</label>
+                            <div class="form-value">
+                                <%= user. surname || 'N/A' %>
+                            </div>
+                        </div>
+                        <div class="col-md-6"><label class="labels">Last Name</label>
+                            <div class="form-value">
+                                <%= user.lastname || 'N/A' %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6"><label class="labels">Country</label>
+                            <div class="form-value">
+                                <%= user.country || 'N/A' %>
+                            </div>
+                        </div>
+                        <div class="col-md-6"><label class="labels">Province</label>
+                            <div class="form-value">
+                                <%= user.province || 'N/A' %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">Full Address</label>
+                            <div class="form-value">
+                                <%= user.address || 'N/A' %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6"><label class="labels">Postal Code</label>
+                            <div class="form-value">
+                                <%= user.zipcode || 'N/A' %>
+                            </div>
+                        </div>
+                        <div class="col-md-6"><label class="labels">Phone</label>
+                            <div class="form-value">
+                                <%= user.TelNum || 'N/A' %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6"><label class="labels">Gender</label>
+                            <div class="form-value">
+                                <%= user.gender || 'N/A' %>
+                            </div>
+                        </div>
+                        <div class="col-md-6"><label class="labels">Date of Birth</label>
+                            <div class="form-value">
+                                <%= user.dob ? user.dob.toISOString().split('T')[0] : 'N/A' %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; 2024 <a href="#">293-469</a> JeerapanRavidanai Co., Ltd. All rights reserved.
+                        &nbsp;&nbsp;
+                        Designed by <a title="HTML CSS Templates" rel="sponsored" href="https://templatemo.com"
+                            target="_blank">293-469</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/jquery/jquery.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

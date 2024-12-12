@@ -9,6 +9,7 @@ const requestIp = require('request-ip');
 const connectDB = require("./server/config/db");
 const session = require("express-session");
 
+
 const app = express();
 const PORT = 5000 || process.env.PORT;
 
@@ -35,6 +36,7 @@ app.use(requestIp.mw());
 
 app.use(express.static("assets"));
 app.use(express.static("vendor"));
+app.use(express.static("uploads"));
 
 // tamplate engine
 
@@ -54,12 +56,13 @@ app.get("/login", require("./server/routes/main"));
 app.get("/post/:id", require("./server/routes/main"));
 app.get("/forum/type/:type", require("./server/routes/main"));
 app.post("/write", require("./server/routes/login"));
-app.get("/profile", require("./server/routes/login"));
 app.get("/logout", require("./server/routes/login"));
 app.post("/auth", require("./server/routes/login"));
 app.post("/register", require("./server/routes/login"));
 app.post("/post/:id/comment", require("./server/routes/main"));
-
+app.get("/profile", require("./server/routes/main"));
+app.post("/upload", require("./server/routes/main"));
+app.get("/about", require("./server/routes/main"));
 
 
 app.listen(PORT, () => {

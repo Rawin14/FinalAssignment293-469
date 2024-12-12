@@ -52,9 +52,9 @@ const UserSchema = new Schema({
     required: true,
   },
   myfiles: {
-    type: Array,
-    required: true,
-  },
+    type: String, // เก็บ path ของไฟล์รูปภาพ
+    default: '/uploads/default-profile.png'
+  }
 });
 
 module.exports = mongoose.model("User", UserSchema);
