@@ -34,25 +34,6 @@ router.post("/auth", async (req, res) => {
   }
 });
 
-// ตรวจสอบการ login
-// router.post("/auth", (req, res) => {
-//   try {
-//     const { username, password } = req.body; // ดึงข้อมูล username และ password จาก form
-
-//     console.log("Request Body:", req.body); // log ข้อมูลใน console
-
-//     if (username === "admin" && password === "admin") {
-//       // หาก username และ password ตรงกับ admin
-//       res.send("Login successful"); // เปลี่ยนเส้นทางไปยังหน้าผู้ดูแลระบบ
-//     } else {
-//       // หากข้อมูลไม่ถูกต้อง
-//       res.redirect("/login"); // เปลี่ยนกลับไปยังหน้าล็อกอิน
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Server Error");
-//   }
-// });
 // สมัครสมาชิก
 router.post("/register", async (req, res) => {
   try {

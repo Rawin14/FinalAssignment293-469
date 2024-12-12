@@ -1,8 +1,0 @@
-[build]
-  functions = "netlify/functions"  # ระบุที่ตั้งฟังก์ชัน
-
-[[redirects]]
-  from = "/"
-  to = "/.netlify/functions/server"  # ใช้ฟังก์ชันที่สร้างใน "server.js"
-  status = 200
-
