@@ -13,6 +13,12 @@ const session = require("express-session");
 const app = express();
 const PORT = 5000 || process.env.PORT;
 
+exports.handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: 'Hello from Netlify Function!',
+  };
+};
 // connect to database
 connectDB();
 
@@ -65,6 +71,6 @@ app.post("/upload", require("./server/routes/main"));
 app.get("/about", require("./server/routes/main"));
 
 
-app.listen(PORT ,  () => {
+app.listen(PORT ,'0.0.0.0',  () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
