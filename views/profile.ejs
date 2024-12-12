@@ -30,9 +30,10 @@
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
                             <li><a href="/home">Home</a></li>
-                            <li><a href="/types" class="active">Type</a></li>
+                            <li><a href="/types" >Type</a></li>
                             <li><a href="/game">Game</a></li>
                             <li><a href="/forum">Forum</a></li>
+                            <li><a href="/about">About</a></li>
                             <!-- Check if the user is logged in -->
                             <% if (!isLoggedIn) { %>
                                 <!-- แสดง Login และ Register ถ้ายังไม่ได้เข้าสู่ระบบ -->
@@ -47,7 +48,7 @@
                                             <%= username %>
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="/profile">My Profile</a></li>
+                                            <li><a href="/profile" class="active">My Profile</a></li>
                                             <li><a href="/logout">Logout</a></li>
                                         </ul>
                                     </li>
