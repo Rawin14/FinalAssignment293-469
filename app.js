@@ -34,7 +34,7 @@ app.use(
 
 app.use(requestIp.mw());
 
-app.use(express.static("assets"));
+app.use(express.static("public"));
 app.use(express.static("vendor"));
 app.use(express.static("uploads"));
 
@@ -65,6 +65,6 @@ app.post("/upload", require("./server/routes/main"));
 app.get("/about", require("./server/routes/main"));
 
 
-app.listen(PORT, () => {
+app.listen(PORT ,  () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
