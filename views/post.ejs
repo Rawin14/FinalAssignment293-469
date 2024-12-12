@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css" />
     <link rel="stylesheet" href="/css/forum.css">
     <link rel="stylesheet" href="/css/writeforum.css">
+    <link rel="stylesheet" href="/css/create.css">
     <!--
 
 TemplateMo 577 Liberty Market
@@ -70,19 +71,21 @@ https://templatemo.com/tm-577-liberty-market
                             <% if (!isLoggedIn) { %>
                                 <!-- แสดง Login และ Register ถ้ายังไม่ได้เข้าสู่ระบบ -->
                                 <li id="login-register">
-                                  <li><a href="/register">Create Yours</a></li>
-                                  <li><a href="/login">Login</a></li>
+                                <li><a href="/register">Create Yours</a></li>
+                                <li><a href="/login">Login</a></li>
                                 </li>
                                 <% } else { %>
-                                  <!-- แสดง Dropdown Profile ถ้าเข้าสู่ระบบแล้ว -->
-                                  <li id="profile-link" class="dropdown">
-                                    <a href="#" class="dropdown-toggle"><%= username %></a>
-                                    <ul class="dropdown-menu">
-                                      <li><a href="/profile">My Profile</a></li>
-                                      <li><a href="/logout">Logout</a></li>
-                                    </ul>
-                                  </li>
-                                  <% } %>
+                                    <!-- แสดง Dropdown Profile ถ้าเข้าสู่ระบบแล้ว -->
+                                    <li id="profile-link" class="dropdown">
+                                        <a href="#" class="dropdown-toggle">
+                                            <%= username %>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="/profile">My Profile</a></li>
+                                            <li><a href="/logout">Logout</a></li>
+                                        </ul>
+                                    </li>
+                                    <% } %>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -115,7 +118,8 @@ https://templatemo.com/tm-577-liberty-market
                         <div class="header-forum">
                             <h1>Cybercrime</h1>
                             <p>ฟอรัมทางการ</p>
-                            <p>👤 <%= totalVisitorsToday %> </p>
+                            <p>👤 <%= totalVisitorsToday %>
+                            </p>
                         </div>
                         <ul class="menu">
                             <ul class="socialmenu">
@@ -170,6 +174,51 @@ https://templatemo.com/tm-577-liberty-market
                                     <%- data.content %>
                                 </div>
                             </article>
+                            <h1 class="color-text">Comments</h1>
+                            <div class="line"></div>
+                            <div class="content">
+                                <!-- Forum Post -->
+                                <div class="comments-section">
+                                    <% if (comments.length> 0) { %>
+                                        <% comments.forEach(comment=> { %>
+                                            <div class="comment-box">
+                                                <div class="comment-header">
+                                                    <p><strong>
+                                                            <%= comment.username %>
+                                                        </strong></p>
+                                                    <small>
+                                                        <%= comment.created_at.toLocaleString() %>
+                                                    </small>
+                                                </div>
+                                                <div class="comment-content">
+                                                    <p>
+                                                        <%= comment.content %>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <% }) %>
+                                                <% } else { %>
+                                                    <p class="no-comments">No comments yet. Be the first to comment!</p>
+                                                    <% } %>
+                                </div>
+                                <!-- Comment Form -->
+                                <div class="comment-form">
+                                    <% if (isLoggedIn) { %>
+                                        <h4 class="color-text">Leave a Comment</h4>
+                                        <form action="/post/<%= post._id %>/comment" method="POST">
+                                            <div class="col-lg-12">
+                                                <textarea name="content" placeholder="Write your comment here..."
+                                                    class="form-control" required></textarea>
+                                            </div>
+                                            <button type="submit" class="orange-button">Submit</button>
+                                        </form>
+                                        <% } else { %>
+                                            <p class="color-text">
+                                                <a href="/login" class="login-link">Login</a> to leave a comment.
+                                            </p>
+                                            <% } %>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

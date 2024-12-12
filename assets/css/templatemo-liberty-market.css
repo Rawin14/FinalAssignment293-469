@@ -2246,3 +2246,47 @@ body {
 #profile-link {
   position: relative;
 }
+
+.comments-section {
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.comment-box {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.comment-header p {
+  margin: 0;
+  font-weight: bold;
+  color: #333;
+}
+
+.comment-header small {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.comment-content p {
+  margin: 0;
+  color: #555;
+  font-size: 1rem;
+}
+
+.no-comments {
+  color: #555;
+  font-style: italic;
+}
+

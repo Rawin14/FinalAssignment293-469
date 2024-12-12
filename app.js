@@ -58,6 +58,8 @@ app.get("/profile", require("./server/routes/login"));
 app.get("/logout", require("./server/routes/login"));
 app.post("/auth", require("./server/routes/login"));
 app.post("/register", require("./server/routes/login"));
+app.post("/post/:id/comment", require("./server/routes/main"));
+
 
 
 app.listen(PORT, () => {

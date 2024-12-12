@@ -3,6 +3,8 @@ const router = express.Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
 const Visitor = require("../models/visitor");
+const Comment = require('../models/Comment');
+
 
 router.use((req, res, next) => {
   res.locals.isLoggedIn = !!req.session.userId;
@@ -177,12 +179,11 @@ router.get("/forum/type/:type", async (req, res) => {
     // Query สำหรับกรองโพสต์ตามประเภท
     const filter = type ? { types: type } : {}; // ถ้าไม่มี type จะดึงโพสต์ทั้งหมด
 
+    const count = await Post.countDocuments(filter);
     const data = await Post.find(filter)
       .sort({ created_date: -1 })
       .skip((page - 1) * perPage)
       .limit(perPage);
-
-    const count = await Post.countDocuments(filter);
 
     const totalPages = Math.ceil(count / perPage);
     const hasNextPage = page < totalPages;
@@ -205,6 +206,88 @@ router.get("/forum/type/:type", async (req, res) => {
 });
 
 router.get("/post/:id", async (req, res) => {
+  try {
+    const locals = {
+      title: "Post Details",
+      description: "Viewing a single post",
+    };
+
+    const ip = req.clientIp; // ดึง IP จาก request
+    const today = new Date();
+    const dateStr = today.toISOString().split("T")[0]; // ใช้แค่วัน (yyyy-mm-dd)
+    const post = await Post.findById(req.params.id);
+    const comments = await Comment.find({ postId: post._id }).sort({ created_at: -1 });
+
+    // ตรวจสอบว่า IP นี้เคยเข้ามาในวันนี้หรือยัง
+    const existingVisitor = await Visitor.findOne({
+      ip,
+      date: { $gte: new Date(dateStr) },
+    });
+
+    if (!existingVisitor) {
+      // ถ้ายังไม่เคยเข้ามาหรือเป็นวันที่ใหม่ ให้บันทึก IP และวันที่
+      const newVisitor = new Visitor({ ip, date: today });
+      await newVisitor.save();
+      console.log("New visit recorded from IP: " + ip);
+    } else {
+      console.log("IP " + ip + " has already visited today.");
+    }
+
+    // นับจำนวนผู้เข้าชมทั้งหมด
+    const totalVisitorsToday = await Visitor.countDocuments({
+      date: { $gte: new Date(dateStr) },
+    });
+
+    const type = req.params.type || null;
+    const slug = req.params.id;
+    const filter = type ? { types: type } : {};
+    const data = await Post.findById(slug, filter);
+    // รับ type จาก query parameter
+
+    // Query สำหรับกรองโพสต์ตามประเภท
+    // ถ้าไม่มี type จะดึงโพสต์ทั้งหมด
+
+    res.render("post", {
+      locals,
+      data,
+      isLoggedIn: !!req.user,
+      username: req.user ? req.user.username : null,
+      selectedType: type,
+      totalVisitorsToday: totalVisitorsToday,
+      post,
+      comments, // ส่งคอมเมนต์ไปยัง EJS
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Server Error");
+  }
+});
+
+router.post('/post/:id/comment', async (req, res) => {
+  try {
+    const { content } = req.body;
+    const postId = req.params.id;
+    if (!content) {
+      return res.status(400).send("Comment cannot be empty.");
+    }
+
+    const newComment = new Comment({
+      postId,
+      username: req.user.username, // ดึงชื่อผู้ใช้จาก session
+      content,
+      created_at: new Date(),
+    });
+    // สร้างคอมเมนต์ใหม่
+    await newComment.save();
+
+    res.redirect(`/post/${postId}`); // กลับไปหน้าโพสต์เดิม
+  } catch (error) {
+    console.log(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.get("/write", async (req, res) => {
   try {
     const locals = {
       title: "Post Details",
@@ -244,7 +327,7 @@ router.get("/post/:id", async (req, res) => {
     // Query สำหรับกรองโพสต์ตามประเภท
     // ถ้าไม่มี type จะดึงโพสต์ทั้งหมด
 
-    res.render("post", {
+    res.render("writeforum", {
       locals,
       data,
       isLoggedIn: !!req.user,
@@ -256,13 +339,6 @@ router.get("/post/:id", async (req, res) => {
     console.log(error);
     res.status(500).send("Server Error");
   }
-});
-
-router.get("/write", (req, res) => {
-  res.render("writeforum", {
-    isLoggedIn: !!req.user,
-    username: req.user ? req.user.username : null,
-  });
 });
 
 router.get("/register", (req, res) => {
