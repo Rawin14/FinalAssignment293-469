@@ -69,6 +69,9 @@ app.post("/post/:id/comment", require("./server/routes/main"));
 app.get("/profile", require("./server/routes/main"));
 app.post("/upload", require("./server/routes/main"));
 app.get("/about", require("./server/routes/main"));
+app.post("/forgot-password", require("./server/routes/login"));
+app.post("/reset-password/:mail", require("./server/routes/login"));
+app.get("/reset-password/:mail", require("./server/routes/login"));
 
 
 app.listen(PORT ,'0.0.0.0',  () => {

@@ -4,7 +4,6 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 const Visitor = require("../models/visitor");
 const Comment = require("../models/Comment");
-const upload = require('../middleware/upload'); // ไฟล์ Multer ที่ตั้งค่าไว้
 
 router.use((req, res, next) => {
   res.locals.isLoggedIn = !!req.session.userId;
@@ -364,8 +363,8 @@ router.get("/profile", checkAuth, async (req, res) => {
     // ส่งข้อมูลผู้ใช้ไปยัง EJS
     res.render("profile", {
       username: user.username, // ส่ง username
-      user,// ส่ง object ผู้ใช้ทั้งหมด
-    }); 
+      user, // ส่ง object ผู้ใช้ทั้งหมด
+    });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server Error");

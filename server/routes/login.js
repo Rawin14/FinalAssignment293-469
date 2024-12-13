@@ -3,8 +3,7 @@ const router = express.Router();
 const Post = require("../models/Post");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-
+const nodemailer = require("nodemailer");
 
 router.get("/login", (req, res) => {
   try {
@@ -38,23 +37,25 @@ router.post("/auth", async (req, res) => {
 router.post("/register", async (req, res) => {
   try {
     // ตรวจสอบว่า user ได้รับการยืนยันตัวตนแล้วหรือไม่
-    const { 
-      username, 
-      password, 
-      surname, 
-      lastname, 
-      country, 
-      province, 
-      address, 
-      zipcode, 
-      mail, 
-      TelNum, 
-      gender, 
-      dob 
+    const {
+      username,
+      password,
+      surname,
+      lastname,
+      country,
+      province,
+      address,
+      zipcode,
+      mail,
+      TelNum,
+      gender,
+      dob,
     } = req.body; // ดึงข้อมูลอื่นๆ จากฟอร์ม
 
     // หากมีการอัปโหลดไฟล์
-    let myfiles = req.file ? `/uploads/${req.file.filename}` : '/uploads/default-profile.png'; // ใช้ path ของไฟล์ที่อัปโหลด หรือไฟล์ default
+    let myfiles = req.file
+      ? `/uploads/${req.file.filename}`
+      : "/uploads/default-profile.png"; // ใช้ path ของไฟล์ที่อัปโหลด หรือไฟล์ default
 
     // แฮชพาสเวิร์ด
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -90,8 +91,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
-router.post('/write', async (req, res) => {
+router.post("/write", async (req, res) => {
   try {
     const { title, types, content } = req.body;
 
@@ -99,16 +99,16 @@ router.post('/write', async (req, res) => {
     const newPost = new Post({
       title: title,
       types: types,
-      content: content,  // HTML ที่ได้รับจาก Quill Editor
+      content: content, // HTML ที่ได้รับจาก Quill Editor
     });
 
     // ใช้ await แทนการใช้ callback
     await newPost.save();
-    
-    res.redirect('/forum'); // ไปยังหน้าฟอรัม
+
+    res.redirect("/forum"); // ไปยังหน้าฟอรัม
   } catch (err) {
-    console.error('Error saving post:', err);
-    res.status(500).send('Error saving post');
+    console.error("Error saving post:", err);
+    res.status(500).send("Error saving post");
   }
 });
 
@@ -132,6 +132,86 @@ router.post('/write', async (req, res) => {
 //     res.status(500).send("Server Error");
 //   }
 // });
+
+// Route สำหรับขอรีเซ็ตรหัสผ่าน
+router.post("/forgot-password", async (req, res) => {
+  const { mail } = req.body; // ใช้ mail แทน email
+
+  try {
+    // ค้นหาผู้ใช้จากฐานข้อมูลโดยใช้ mail
+    const user = await User.findOne({ mail: mail });
+
+    if (!user) {
+      return res.status(400).send("No user found with that email address");
+    }
+
+    // สร้าง transporter สำหรับส่งอีเมล
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "dylix.1003.p@gmail.com", // อีเมลที่ส่ง
+        pass: "qzjm kllj slkd wnsz", // รหัสผ่านอีเมล
+      },
+    });
+
+    const mailOptions = {
+      from: "dylix.1003.p@gmail.com", // อีเมลที่ส่ง
+      to: mail, // อีเมลผู้รับ
+      subject: "Password Reset Request",
+      text: `Please click the following link to reset your password: http://localhost:5000/reset-password/${mail}`,
+    };
+
+    // ส่งอีเมลไปยังผู้ใช้
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        return res.status(500).send("Error sending email");
+      }
+      res.redirect("/login");
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error processing the request");
+  }
+});
+
+// Route สำหรับตั้งรหัสผ่านใหม่
+router.post("/reset-password", async (req, res) => {
+  const { mail } = req.params; // ดึง email จาก URL
+  const { password } = req.body; // รับรหัสผ่านใหม่จากฟอร์ม
+
+  try {
+    // ค้นหาผู้ใช้จากฐานข้อมูลโดยใช้ฟิลด์ mail
+    const user = await User.findOne({ mail: mail });
+
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    // ตรวจสอบว่ารหัสผ่านใหม่ไม่ควรว่างเปล่า
+    if (!password || password.trim() === "") {
+      return res.status(400).send("Password cannot be empty");
+    }
+
+    // แฮชรหัสผ่านใหม่
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // อัปเดตรหัสผ่านใหม่ในฐานข้อมูล
+    user.password = hashedPassword;
+    await user.save();
+
+    // ส่งข้อความยืนยันหรือเปลี่ยนเส้นทางไปยังหน้าที่ต้องการ
+    res.redirect("/login");
+  } catch (err) {
+    console.error("Error updating password:", err);
+    res.status(500).send("Error updating password");
+  }
+});
+
+
+router.get("/reset-password/:mail", async (req, res) => {
+  const { mail } = req.params;
+  res.render("resetpassword", { mail });
+});
 
 router.get("/logout", (req, res) => {
   req.session.destroy(() => {
