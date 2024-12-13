@@ -175,35 +175,25 @@ router.post("/forgot-password", async (req, res) => {
 });
 
 // Route สำหรับตั้งรหัสผ่านใหม่
-router.post("/reset-password", async (req, res) => {
-  const { mail } = req.params; // ดึง email จาก URL
-  const { password } = req.body; // รับรหัสผ่านใหม่จากฟอร์ม
-
+router.post('/reset-password', async (req, res) => {
   try {
-    // ค้นหาผู้ใช้จากฐานข้อมูลโดยใช้ฟิลด์ mail
-    const user = await User.findOne({ mail: mail });
+    const { password, confirmPassword } = req.body;
 
-    if (!user) {
-      return res.status(404).send("User not found");
+    // ตรวจสอบว่ารหัสผ่านตรงกันหรือไม่
+    if (password !== confirmPassword) {
+      return res.status(400).send('Passwords do not match.');
     }
 
-    // ตรวจสอบว่ารหัสผ่านใหม่ไม่ควรว่างเปล่า
-    if (!password || password.trim() === "") {
-      return res.status(400).send("Password cannot be empty");
-    }
-
-    // แฮชรหัสผ่านใหม่
+    // เข้ารหัสรหัสผ่านก่อนบันทึก
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // อัปเดตรหัสผ่านใหม่ในฐานข้อมูล
-    user.password = hashedPassword;
-    await user.save();
+    // บันทึกรหัสผ่านใหม่ใน MongoDB (สมมติแก้ไขรหัสผ่านของผู้ใช้คนแรกในฐานข้อมูล)
+    await User.findOneAndUpdate({}, { password: hashedPassword });
 
-    // ส่งข้อความยืนยันหรือเปลี่ยนเส้นทางไปยังหน้าที่ต้องการ
-    res.redirect("/login");
-  } catch (err) {
-    console.error("Error updating password:", err);
-    res.status(500).send("Error updating password");
+    res.status(200).send('Password reset successfully!');
+  } catch (error) {
+    console.error('Error resetting password:', error);
+    res.status(500).send('Internal server error');
   }
 });
 
